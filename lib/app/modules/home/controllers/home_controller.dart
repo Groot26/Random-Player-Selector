@@ -15,21 +15,6 @@ class HomeController extends GetxController {
   ].obs;
 
   RxList playlist = [].obs;
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
 }
 
 class Players {

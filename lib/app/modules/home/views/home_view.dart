@@ -86,32 +86,23 @@ class HomeView extends GetView<HomeController> {
           ),
           MaterialButton(
             onPressed: () {
-              int count = 0;
+              int playingCount = 0;
               for (var player in controller.allPlayers) {
                 if (player.isPlaying.value) {
-                  count++;
+                  playingCount++;
                 }
               }
 
-              if (count >= 6) {
+              if (playingCount >= 6) {
                 final random = Random();
-
-                // Ensure playlist is empty before adding new players
                 controller.playlist.clear();
-
-                // final selectedIndices = List.generate(
-                //     5, (i) => random.nextInt(controller.allPlayers.length));
-                //
-                //
-                // final uniqueIndices =
-                //     selectedIndices.toSet().toList(); // Remove duplicates
-
                 final selectedIndices = <int>[];
 
                 while (selectedIndices.length < 5) {
                   final randomIndex =
                       random.nextInt(controller.allPlayers.length);
-                  if (!selectedIndices.contains(randomIndex)) {
+                  if (!selectedIndices.contains(randomIndex) &&
+                      controller.allPlayers[randomIndex].isPlaying.value) {
                     selectedIndices.add(randomIndex);
                   }
                 }
@@ -120,20 +111,13 @@ class HomeView extends GetView<HomeController> {
                   controller.playlist.add(controller.allPlayers[index].name);
                 }
 
-                print(controller.playlist[0]);
-                print(controller.playlist[1]);
-                print(controller.playlist[2]);
-                print(controller.playlist[3]);
-                print(controller.playlist[4]);
-
-                print('*********************************');
+                // Now you can be sure that controller.playlist has exactly 5 players
+                print(controller.playlist);
               } else {
-                // const GetSnackBar(
-                //   title: 'select 5 Players',
-                // );
+                // Handle the case where fewer than 5 players are playing
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('select 6 Players'),
+                    content: Text('Select at least 6 players'),
                   ),
                 );
               }
