@@ -1,7 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get_state_manager/src/simple/get_view.dart';
 
 import '../controllers/home_controller.dart';
 
@@ -60,68 +59,13 @@ class HomeView extends GetView<HomeController> {
                             )
                           : const SizedBox(),
                     ),
-
-                    // SizedBox(
-                    //   width: 50,
-                    //   height: 50,
-                    //   child:
-                    //   ListView.builder(
-                    //     itemCount: controller.playlist.length,
-                    //     shrinkWrap: true,
-                    //     itemBuilder: (context, index) {
-                    //       print(controller.playlist[index - 1]);
-                    //       Obx(
-                    //         () => Text(
-                    //           controller.playlist[index - 1],
-                    //           style: TextStyle(color: Colors.black),
-                    //         ),
-                    //       );
-                    //     },
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
             ],
           ),
           MaterialButton(
-            onPressed: () {
-              int playingCount = 0;
-              for (var player in controller.allPlayers) {
-                if (player.isPlaying.value) {
-                  playingCount++;
-                }
-              }
-
-              if (playingCount >= 6) {
-                final random = Random();
-                controller.playlist.clear();
-                final selectedIndices = <int>[];
-
-                while (selectedIndices.length < 5) {
-                  final randomIndex =
-                      random.nextInt(controller.allPlayers.length);
-                  if (!selectedIndices.contains(randomIndex) &&
-                      controller.allPlayers[randomIndex].isPlaying.value) {
-                    selectedIndices.add(randomIndex);
-                  }
-                }
-
-                for (int index in selectedIndices) {
-                  controller.playlist.add(controller.allPlayers[index].name);
-                }
-
-                // Now you can be sure that controller.playlist has exactly 5 players
-                print(controller.playlist);
-              } else {
-                // Handle the case where fewer than 5 players are playing
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Select at least 6 players'),
-                  ),
-                );
-              }
-            },
+            onPressed: () => controller.random(context: context),
             color: Colors.yellow.shade900,
             child: const Text(
               'get',

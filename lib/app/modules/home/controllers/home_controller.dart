@@ -1,9 +1,8 @@
+import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  // RxList allPlayers =
-  //     ['Jroot', 'Negan', 'Gamer', 'Saitama', 'Turbo', 'Shifty', 'Hello'].obs;
-
   RxList<Players> allPlayers = [
     Players(name: 'Jroot', isPlaying: true.obs),
     Players(name: 'Negan', isPlaying: true.obs),
@@ -12,9 +11,77 @@ class HomeController extends GetxController {
     Players(name: 'Turbo', isPlaying: true.obs),
     Players(name: 'Shifty', isPlaying: true.obs),
     Players(name: 'Hello', isPlaying: true.obs),
+    Players(name: 'Nt', isPlaying: true.obs),
   ].obs;
 
   RxList playlist = [].obs;
+
+  // List<int> newList = [];
+
+  void random({required BuildContext context}) {
+    final playingPlayers =
+        allPlayers.where((player) => player.isPlaying.value).toList();
+    playlist.value =
+        playingPlayers.sample(5).map((player) => player.name).toList();
+  }
+
+  // newRandom({required BuildContext context}) {
+  //   List<int> getList(int n, List<int> source) =>
+  //       source.sample(n); // to get 5 random non repeating numbers
+  //
+  //   newList.clear();
+  //   playlist.clear();
+  //
+  //   for (Players player in allPlayers) {
+  //     if (player.isPlaying.value) {
+  //       newList.add(allPlayers.indexOf(player));
+  //     }
+  //   }
+  //
+  //   final outputList = getList(5, newList); // 5 random non repeating numbers
+  //   print(outputList);
+  //
+  //   for (int index in outputList) {
+  //     playlist.add(allPlayers[index].name);
+  //   }
+  // }
+  //
+  // Randomgenrator({required BuildContext context}) {
+  //   int playingCount = 0;
+  //   for (var player in allPlayers) {
+  //     if (player.isPlaying.value) {
+  //       playingCount++;
+  //     }
+  //   }
+  //
+  //   if (playingCount >= 6) {
+  //     final random = Random();
+  //     playlist.clear();
+  //     final selectedIndices = <int>[];
+  //
+  //     while (selectedIndices.length < 5) {
+  //       final randomIndex = random.nextInt(allPlayers.length);
+  //       if (!selectedIndices.contains(randomIndex) &&
+  //           allPlayers[randomIndex].isPlaying.value) {
+  //         selectedIndices.add(randomIndex);
+  //       }
+  //     }
+  //
+  //     for (int index in selectedIndices) {
+  //       playlist.add(allPlayers[index].name);
+  //     }
+  //
+  //     // Now you can be sure that  playlist has exactly 5 players
+  //     print(playlist);
+  //   } else {
+  //     // Handle the case where fewer than 5 players are playing
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         content: Text('Select at least 6 players'),
+  //       ),
+  //     );
+  //   }
+  // }
 }
 
 class Players {
