@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,18 +12,25 @@ class HomeController extends GetxController {
     Players(name: 'Turbo', isPlaying: true.obs),
     Players(name: 'Shifty', isPlaying: true.obs),
     Players(name: 'Hello', isPlaying: true.obs),
-    Players(name: 'Nt', isPlaying: true.obs),
   ].obs;
 
   RxList playlist = [].obs;
 
+  TextEditingController name = TextEditingController();
+  TextEditingController number = TextEditingController(text: '5');
+  final formKey = GlobalKey<FormState>();
+
   // List<int> newList = [];
 
   void random({required BuildContext context}) {
-    final playingPlayers =
-        allPlayers.where((player) => player.isPlaying.value).toList();
-    playlist.value =
-        playingPlayers.sample(5).map((player) => player.name).toList();
+    if (formKey.currentState!.validate()) {
+      final playingPlayers =
+          allPlayers.where((player) => player.isPlaying.value).toList();
+      playlist.value = playingPlayers
+          .sample(int.tryParse(number.text) ?? 0)
+          .map((player) => player.name)
+          .toList();
+    }
   }
 
   // newRandom({required BuildContext context}) {
